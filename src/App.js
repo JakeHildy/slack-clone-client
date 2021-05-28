@@ -1,23 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.scss";
+import io from "socket.io-client";
+import React, { useEffect, useRef, useState } from "react";
+
+const ENDPOINT = "http://192.168.1.70:9000";
 
 function App() {
+  let socket = useRef(null);
+  let socket2 = useRef(null);
+  const [messages, setMessages] = useState(["one", "two"]);
+  const [newMessage, setNewMessage] = useState("");
+
+  useEffect(() => {
+    socket.current = io(ENDPOINT); // The / namespace
+    socket2.current = io(`${ENDPOINT}/admin`); // The admin namespace
+
+    socket2.current.on("connect", () => {
+      console.log(socket2.current.id);
+      socket2.current.on("welcome", (msg) => {
+        console.log(msg);
+      });
+    });
+
+    socket.current.on("messageFromServer", (data) => {
+      console.log(data.data);
+      socket.current.emit("Message from client", {
+        data: "message from client",
+      });
+    });
+
+    socket.current.on("messageToClients", (data) => {
+      setMessages((oldMessages) => [...oldMessages, data.text]);
+    });
+  }, []);
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    socket.current.emit("newMessageToServer", { text: newMessage });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1 className="app__heading">Jake's Slack Clone</h1>
+      <form onSubmit={(e) => onFormSubmit(e)} className="form">
+        <input
+          type="text"
+          onChange={(e) => {
+            setNewMessage(e.target.value);
+          }}
+          placeholder="Enter Message..."
+          className="form__input"
+        />
+        <button className="form__button">Submit</button>
+      </form>
+      <ul className="messages">
+        {messages.map((message, i) => {
+          return (
+            <li key={i} className="messages__message">
+              {message}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
