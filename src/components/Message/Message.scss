@@ -1,0 +1,27 @@
+.message {
+  display: flex;
+  margin-bottom: 1.6rem;
+
+  &__profile-img {
+    width: 5rem;
+    margin-right: 0.8rem;
+    border-radius: 3px;
+  }
+
+  &__heading {
+    display: flex;
+    align-items: baseline;
+  }
+
+  &__username {
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-right: 0.8rem;
+  }
+
+  &__time {
+  }
+
+  &__text {
+  }
+}
