@@ -2,7 +2,7 @@ import "./App.scss";
 import io from "socket.io-client";
 import React, { useEffect, useRef, useState } from "react";
 
-const ENDPOINT = "http://192.168.1.70:9000";
+const ENDPOINT = "http://192.168.1.75:9000";
 
 function App() {
   let socket = useRef(null);
@@ -14,18 +14,19 @@ function App() {
     socket.current = io(ENDPOINT); // The / namespace
     socket2.current = io(`${ENDPOINT}/admin`); // The admin namespace
 
-    socket2.current.on("connect", () => {
-      console.log(socket2.current.id);
-      socket2.current.on("welcome", (msg) => {
-        console.log(msg);
-      });
-    });
-
-    socket.current.on("messageFromServer", (data) => {
-      console.log(data.data);
+    socket.current.on("messageFromServer", (msg) => {
+      console.log(msg);
       socket.current.emit("Message from client", {
         data: "message from client",
       });
+    });
+
+    socket.current.on("joined", (msg) => {
+      console.log(msg);
+    });
+
+    socket2.current.on("welcome", (msg) => {
+      console.log(msg);
     });
 
     socket.current.on("messageToClients", (data) => {
