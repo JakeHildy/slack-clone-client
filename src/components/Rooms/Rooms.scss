@@ -1,4 +1,27 @@
 .rooms {
   background-color: #33383f;
-  color: #fff;
+  color: #a1a8b5;
+  padding: 0;
+
+  &__title {
+    padding: 0 2rem;
+  }
+
+  &__list {
+    list-style: none;
+  }
+
+  &__list-item {
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: lighten(#33383f, 5);
+    }
+  }
+
+  &__icon {
+    margin-right: 1rem;
+  }
 }
