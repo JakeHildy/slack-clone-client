@@ -1,0 +1,46 @@
+.current-room {
+  background-color: #f6efe8;
+  height: 100vh;
+}
+
+.form {
+  margin-bottom: 3rem;
+
+  &__input {
+    padding: 1rem 2rem;
+    font-family: inherit;
+    margin-right: 1rem;
+    font-size: 2rem;
+    border-radius: 5px;
+    border: 2px solid #611f69;
+
+    &:active,
+    &:focus {
+      border: 2px solid #611f69;
+      outline: none;
+    }
+  }
+
+  &__button {
+    padding: 1rem 2rem;
+    font-family: inherit;
+    font-size: 2rem;
+    background-color: #611f69;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken(#611f69, 3);
+    }
+  }
+}
+
+.messages {
+  list-style-type: none;
+
+  &__message {
+    font-size: 1.7rem;
+  }
+}
