@@ -1,44 +1,38 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SocketContext from "./../../context/socket";
 import "./NameSpaces.scss";
-import IconWikipedia from "./../../assets/icons/wikipedia-icon.svg";
-import IconFireFox from "./../../assets/icons/firefox-icon.png";
-import IconLinux from "./../../assets/icons/linux-icon.png";
 
 function NameSpaces() {
   const socket = useContext(SocketContext);
+  const [nsData, setNsData] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    socket.on("messageFromServer", (data) => {
-      console.log(data);
+    socket.on("nsList", (nsData) => {
+      setNsData(nsData);
+      setLoaded(true);
     });
   }, []);
 
-  return (
-    <div className="namespaces">
-      <div className="namespace" ns="/wiki">
-        <img
-          src={IconWikipedia}
-          alt="Wikipedia Namespace"
-          className="namespace__img"
-        />
+  if (loaded) {
+    return (
+      <div className="namespaces">
+        {nsData.map((namespace, i) => {
+          return (
+            <div key={i} className="namespace" ns={namespace.endpoint}>
+              <img
+                src={namespace.img}
+                alt="Select Namespace"
+                className="namespace__img"
+              />
+            </div>
+          );
+        })}
       </div>
-      <div className="namespace" ns="/firefox">
-        <img
-          src={IconFireFox}
-          alt="Firefox Namespace"
-          className="namespace__img"
-        />
-      </div>
-      <div className="namespace" ns="/linux">
-        <img
-          src={IconLinux}
-          alt="Wikipedia Namespace"
-          className="namespace__img"
-        />
-      </div>
-    </div>
-  );
+    );
+  } else {
+    return <div></div>;
+  }
 }
 
 export default NameSpaces;

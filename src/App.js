@@ -1,6 +1,5 @@
 import "./App.scss";
-import io from "socket.io-client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import SocketContext, { socket } from "./context/socket";
 import NameSpaces from "./components/NameSpaces/NameSpaces";
 import Rooms from "./components/Rooms/Rooms";
