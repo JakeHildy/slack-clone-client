@@ -13,7 +13,6 @@ function App() {
 
   useEffect(() => {
     setNsSocket(socketio(`${SOCKET_URL}${ns}`));
-    console.log(`Connecting to ${ns}`);
   }, [ns]);
 
   const updateNamespace = (ns) => {

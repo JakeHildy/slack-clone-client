@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import SocketContext from "./../../context/socket";
-import NSSocketContext from "./../../context/nsSocket";
 import "./NameSpaces.scss";
 
 function NameSpaces({ updateNamespace }) {
-  const socket = useContext(SocketContext);
-  const nsSocket = useContext(NSSocketContext);
   const [nsData, setNsData] = useState(null);
-  const [roomData, setRoomData] = useState(null);
+  const socket = useContext(SocketContext);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -19,15 +16,6 @@ function NameSpaces({ updateNamespace }) {
       socket.off("nsList");
     };
   }, [socket]);
-
-  useEffect(() => {
-    if (nsSocket) {
-      nsSocket.on("nsRoomLoad", (nsRoomData) => {
-        console.log(nsRoomData);
-        setRoomData(nsRoomData);
-      });
-    }
-  }, [nsSocket]);
 
   const connectToNS = (e) => {
     const nsEndpoint = e.target.getAttribute("ns");
