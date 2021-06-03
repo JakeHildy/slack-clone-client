@@ -23,7 +23,6 @@ function Rooms() {
   };
 
   const joinRoom = (roomName) => {
-    console.log(`joining ${roomName} room.`);
     // Send the roomName to the server!
     nsSocket.emit("joinRoom", roomName, (newNumberOfMembers) => {
       // we want to update the room number total now that we have joined!

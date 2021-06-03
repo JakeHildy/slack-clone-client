@@ -3,6 +3,8 @@
   height: 100vh;
   position: relative;
   padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
 
   &__header {
     display: flex;
@@ -22,13 +24,16 @@
 
   &__messages {
     list-style-type: none;
+    // max-height: 85vh;
+    overflow: auto;
+    margin-bottom: auto;
   }
 }
 
 .form {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  // position: absolute;
+  // bottom: 1rem;
+  // left: 1rem;
   display: flex;
   width: 60vw;
   padding: 0 2rem;

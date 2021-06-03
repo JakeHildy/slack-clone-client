@@ -1,32 +1,38 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import "./CurrentRoom.scss";
 import NSSocketContext from "./../../context/nsSocket";
 import Message from "./../Message/Message";
 
 function CurrentRoom() {
   const nsSocket = useContext(NSSocketContext);
-  const [messages, setMessages] = useState([
-    {
-      username: "rbunch",
-      text: "Does anyone know of any websites that will let you see the traffic and bounce rate of other sites? I'm doing some competitor research and want to have as many data points as possible for the pitch. Much appreciated :pray:",
-      time: Date.now(),
-      avatar: "http://via.placeholder.com/30",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const messagesContainer = useRef();
 
   useEffect(() => {
     if (nsSocket) {
       nsSocket.on("messageToClients", (msg) => {
-        console.log(msg);
         setMessages((prevMessages) => [...prevMessages, msg]);
+        scrollToBottomOfMessages();
+      });
+      nsSocket.on("historyCatchUp", (msg) => {
+        setMessages(msg);
+        scrollToBottomOfMessages();
       });
     }
   }, [nsSocket]);
 
+  const scrollToBottomOfMessages = () => {
+    messagesContainer.current.scrollTo(
+      0,
+      messagesContainer.current.scrollHeight
+    );
+  };
+
   const onFormSubmit = (e) => {
     e.preventDefault();
     const newMessage = e.target.message.value;
+    if (newMessage === "") return;
     nsSocket.emit("newMessageToServer", { text: newMessage });
     e.target.reset();
   };
@@ -42,7 +48,7 @@ function CurrentRoom() {
         ></span>
       </div>
 
-      <ul className="current-room__messages">
+      <ul className="current-room__messages" ref={messagesContainer}>
         {messages.map((message, i) => {
           return <Message key={i} message={message} />;
         })}
