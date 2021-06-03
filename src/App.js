@@ -1,43 +1,36 @@
 import "./App.scss";
-import React, { useEffect } from "react";
-import SocketContext, { socket } from "./context/socket";
+import React, { useState, useEffect } from "react";
+import socketio from "socket.io-client";
+import SocketContext, { socket, SOCKET_URL } from "./context/socket";
+import NSSocketContext from "./context/nsSocket";
 import NameSpaces from "./components/NameSpaces/NameSpaces";
 import Rooms from "./components/Rooms/Rooms";
 import CurrentRoom from "./components/CurrentRoom/CurrentRoom";
 
 function App() {
-  // let socket = useRef(null);
-  // let socket2 = useRef(null);
+  const [nsSocket, setNsSocket] = useState(null);
+  const [ns, setNs] = useState("/wiki");
 
   useEffect(() => {
-    // socket.current = io(ENDPOINT); // The / namespace
-    // socket2.current = io(`${ENDPOINT}/wiki`); // The admin namespace
-    // socket.current.on("messageFromServer", (msg) => {
-    //   console.log(msg);
-    //   socket.current.emit("Message from client", {
-    //     data: "message from client",
-    //   });
-    // });
-    // socket.current.on("joined", (msg) => {
-    //   console.log(msg);
-    // });
-    // socket2.current.on("welcome", (msg) => {
-    //   console.log(msg);
-    // });
-    // socket.current.on("messageToClients", (data) => {
-    // setMessages((oldMessages) => [...oldMessages, data.text]);
-    // });
-  }, []);
+    setNsSocket(socketio(`${SOCKET_URL}${ns}`));
+    console.log(`Connecting to ${ns}`);
+  }, [ns]);
+
+  const updateNamespace = (ns) => {
+    setNs(ns);
+  };
 
   return (
     <SocketContext.Provider value={socket}>
-      <div className="app">
-        <NameSpaces />
-        <Rooms />
-        <div className="app__current-room">
-          <CurrentRoom />
+      <NSSocketContext.Provider value={nsSocket}>
+        <div className="app">
+          <NameSpaces updateNamespace={updateNamespace} />
+          <Rooms />
+          <div className="app__current-room">
+            <CurrentRoom />
+          </div>
         </div>
-      </div>
+      </NSSocketContext.Provider>
     </SocketContext.Provider>
   );
 }

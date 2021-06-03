@@ -1,6 +1,6 @@
 import React from "react";
 import socketio from "socket.io-client";
-const SOCKET_URL = "http://192.168.1.75:9000";
+export const SOCKET_URL = "http://192.168.1.75:9000";
 
 const SocketContext = React.createContext();
 SocketContext.displayName = "SocketContext";
