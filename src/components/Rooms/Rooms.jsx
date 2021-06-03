@@ -7,9 +7,30 @@ function Rooms() {
   const nsSocket = useContext(NSSocketContext);
   const [loaded, setLoaded] = useState(false);
 
-  const joinRoom = (e) => {
+  // Join Room automatically first time
+  useEffect(() => {
+    if (roomData) {
+      const topRoomName = roomData[0].roomTitle;
+      joinRoom(topRoomName);
+    }
+  }, [roomData]);
+
+  const handleRoomClicked = (e) => {
     e.preventDefault();
-    console.log("join room clicked");
+    // console.log(`Someone clicked on ${e.target.innerText}`);
+    const roomName = e.target.innerText;
+    joinRoom(roomName);
+  };
+
+  const joinRoom = (roomName) => {
+    console.log(`joining ${roomName} room.`);
+    // Send the roomName to the server!
+    nsSocket.emit("joinRoom", roomName, (newNumberOfMembers) => {
+      // we want to update the room number total now that we have joined!
+      document.querySelector(
+        ".current-room__users"
+      ).innerHTML = `Users ${newNumberOfMembers}`;
+    });
   };
 
   useEffect(() => {
@@ -28,16 +49,15 @@ function Rooms() {
 
         <ul className="rooms__list">
           {roomData.map((room, i) => {
+            const glyph = room.privateRoom ? "lock" : "globe";
             return (
               <li
                 key={i}
                 className="rooms__list-item"
-                onClick={(e) => joinRoom(e)}
+                onClick={(e) => handleRoomClicked(e)}
               >
                 <span
-                  className={`rooms__icon glyphicon glyphicon-${
-                    room.privateRoom ? "lock" : "globe"
-                  }`}
+                  className={`rooms__icon glyphicon glyphicon-${glyph}`}
                   aria-hidden="true"
                 >
                   {" "}

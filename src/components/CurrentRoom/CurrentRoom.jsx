@@ -1,32 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./CurrentRoom.scss";
+import NSSocketContext from "./../../context/nsSocket";
 import Message from "./../Message/Message";
 
 function CurrentRoom() {
+  const nsSocket = useContext(NSSocketContext);
   const [messages, setMessages] = useState([
-    { user: "Ian Yu", text: "I went running today", timestamp: Date.now() },
     {
-      user: "rbunch",
+      username: "rbunch",
       text: "Does anyone know of any websites that will let you see the traffic and bounce rate of other sites? I'm doing some competitor research and want to have as many data points as possible for the pitch. Much appreciated :pray:",
-      timestamp: Date.now(),
-    },
-    {
-      user: "Camille Naidoo",
-      text: "Hey everyone! Climate Mind is looking for dev volunteers to join our team and help build a tool that allows users to have meaningful and productive conversations about climate change. If you're interested and have a few hours a week to dedicate to this Stanford-affiliated non-profit project, please reach out!",
-      timestamp: Date.now(),
-    },
-    {
-      user: "Karli Gresley-Babe",
-      text: "I love Jake so so so so so smuch!!!!!!",
-      timestamp: Date.now(),
+      time: Date.now(),
+      avatar: "http://via.placeholder.com/30",
     },
   ]);
   const [newMessage, setNewMessage] = useState("");
 
+  useEffect(() => {
+    if (nsSocket) {
+      nsSocket.on("messageToClients", (msg) => {
+        console.log(msg);
+        setMessages((prevMessages) => [...prevMessages, msg]);
+      });
+    }
+  }, [nsSocket]);
+
   const onFormSubmit = (e) => {
     e.preventDefault();
-    console.log("form submitted");
-    // socket.current.emit("newMessageToServer", { text: newMessage });
+    const newMessage = e.target.message.value;
+    nsSocket.emit("newMessageToServer", { text: newMessage });
+    e.target.reset();
   };
 
   return (
@@ -35,7 +37,7 @@ function CurrentRoom() {
         <h2 className="current-room__title">Current room</h2>
         <span className="current-room__users">Users</span>{" "}
         <span
-          className="current-room__users glyphicon glyphicon-user"
+          className="current-room__users-icon glyphicon glyphicon-user"
           aria-hidden="true"
         ></span>
       </div>
@@ -48,6 +50,7 @@ function CurrentRoom() {
       <form onSubmit={(e) => onFormSubmit(e)} className="form">
         <input
           type="text"
+          name="message"
           onChange={(e) => {
             setNewMessage(e.target.value);
           }}
