@@ -3,10 +3,11 @@ import "./CurrentRoom.scss";
 import NSSocketContext from "./../../context/nsSocket";
 import Message from "./../Message/Message";
 
-function CurrentRoom() {
+function CurrentRoom({ roomName }) {
   const nsSocket = useContext(NSSocketContext);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [searchStr, setsearchStr] = useState("");
+  const [numUsers, setnumUsers] = useState(0);
   const messagesContainer = useRef();
 
   useEffect(() => {
@@ -18,6 +19,9 @@ function CurrentRoom() {
       nsSocket.on("historyCatchUp", (msg) => {
         setMessages(msg);
         scrollToBottomOfMessages();
+      });
+      nsSocket.on("updateMembers", (numUsers) => {
+        setnumUsers(numUsers);
       });
     }
   }, [nsSocket]);
@@ -37,29 +41,55 @@ function CurrentRoom() {
     e.target.reset();
   };
 
+  const onSearchSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="current-room">
       <div className="current-room__header">
-        <h2 className="current-room__title">Current room</h2>
-        <span className="current-room__users">Users</span>{" "}
-        <span
-          className="current-room__users-icon glyphicon glyphicon-user"
-          aria-hidden="true"
-        ></span>
+        <div className="current-room__header--left">
+          <h2 className="current-room__title">{roomName}</h2>
+          <span className="current-room__users">{`Users ${numUsers}`}</span>{" "}
+          <span
+            className="current-room__users-icon glyphicon glyphicon-user"
+            aria-hidden="true"
+          ></span>
+        </div>
+
+        <div className="current-room__header--right">
+          <form onSubmit={onSearchSubmit} className="search-form">
+            <input
+              type="text"
+              name="search"
+              onChange={(e) => setsearchStr(e.target.value)}
+              placeholder="Search..."
+              className="search-form__input"
+            />
+            <span
+              className="search-form__icon glyphicon glyphicon-search"
+              aria-hidden="true"
+            ></span>
+          </form>
+        </div>
       </div>
 
       <ul className="current-room__messages" ref={messagesContainer}>
-        {messages.map((message, i) => {
-          return <Message key={i} message={message} />;
-        })}
+        {messages
+          .filter((message) => {
+            return (
+              message.text.toLowerCase().includes(searchStr.toLowerCase()) ||
+              message.username.toLowerCase().includes(searchStr.toLowerCase())
+            );
+          })
+          .map((message, i) => {
+            return <Message key={i} message={message} />;
+          })}
       </ul>
       <form onSubmit={(e) => onFormSubmit(e)} className="form">
         <input
           type="text"
           name="message"
-          onChange={(e) => {
-            setNewMessage(e.target.value);
-          }}
           placeholder="Enter Your Message..."
           className="form__input"
         />

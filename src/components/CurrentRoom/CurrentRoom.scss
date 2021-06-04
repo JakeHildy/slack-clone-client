@@ -8,8 +8,17 @@
 
   &__header {
     display: flex;
-    align-items: baseline;
     margin-bottom: 3rem;
+    // justify-content: space-between;
+
+    &--left {
+      display: flex;
+      align-items: baseline;
+      margin-right: auto;
+    }
+
+    &--right {
+    }
   }
 
   &__title {
@@ -31,9 +40,6 @@
 }
 
 .form {
-  // position: absolute;
-  // bottom: 1rem;
-  // left: 1rem;
   display: flex;
   width: 60vw;
   padding: 0 2rem;
@@ -67,5 +73,32 @@
     &:hover {
       background-color: darken(#611f69, 3);
     }
+  }
+}
+
+.search-form {
+  display: flex;
+  width: 30rem;
+  // padding: 0 2rem;
+  position: relative;
+
+  &__input {
+    padding: 1rem 2rem;
+    font-family: inherit;
+    font-size: 2rem;
+    border-radius: 5px;
+    border: 2px solid #611f69;
+
+    &:active,
+    &:focus {
+      border: 2px solid #611f69;
+      outline: none;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    right: 3rem;
+    top: 1.8rem;
   }
 }

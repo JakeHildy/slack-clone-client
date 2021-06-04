@@ -1,6 +1,5 @@
 import React from "react";
 import "./Message.scss";
-import DefaultProfileImage from "./../../assets/images/portrait-placeholder.png";
 
 function Message({ message }) {
   return (

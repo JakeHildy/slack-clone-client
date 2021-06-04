@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import NSSocketContext from "./../../context/nsSocket";
 import "./Rooms.scss";
 
-function Rooms() {
+function Rooms({ updateRoom, roomName }) {
   const [roomData, setRoomData] = useState(null);
   const nsSocket = useContext(NSSocketContext);
   const [loaded, setLoaded] = useState(false);
@@ -24,12 +24,8 @@ function Rooms() {
 
   const joinRoom = (roomName) => {
     // Send the roomName to the server!
-    nsSocket.emit("joinRoom", roomName, (newNumberOfMembers) => {
-      // we want to update the room number total now that we have joined!
-      document.querySelector(
-        ".current-room__users"
-      ).innerHTML = `Users ${newNumberOfMembers}`;
-    });
+    nsSocket.emit("joinRoom", roomName);
+    updateRoom(roomName);
   };
 
   useEffect(() => {
@@ -49,10 +45,14 @@ function Rooms() {
         <ul className="rooms__list">
           {roomData.map((room, i) => {
             const glyph = room.privateRoom ? "lock" : "globe";
+            const highlighted =
+              room.roomTitle === roomName
+                ? "rooms__list-item--current-room"
+                : "";
             return (
               <li
                 key={i}
-                className="rooms__list-item"
+                className={`rooms__list-item ${highlighted}`}
                 onClick={(e) => handleRoomClicked(e)}
               >
                 <span

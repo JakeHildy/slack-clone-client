@@ -9,9 +9,13 @@ import CurrentRoom from "./components/CurrentRoom/CurrentRoom";
 
 function App() {
   const [nsSocket, setNsSocket] = useState(null);
+  const [currentRoom, setCurrentRoom] = useState("");
   const [ns, setNs] = useState("/wiki");
 
   useEffect(() => {
+    if (nsSocket) {
+      nsSocket.close();
+    }
     setNsSocket(socketio(`${SOCKET_URL}${ns}`));
   }, [ns]);
 
@@ -19,14 +23,18 @@ function App() {
     setNs(ns);
   };
 
+  const updateRoom = (room) => {
+    setCurrentRoom(room);
+  };
+
   return (
     <SocketContext.Provider value={socket}>
       <NSSocketContext.Provider value={nsSocket}>
         <div className="app">
           <NameSpaces updateNamespace={updateNamespace} />
-          <Rooms />
+          <Rooms updateRoom={updateRoom} roomName={currentRoom} />
           <div className="app__current-room">
-            <CurrentRoom />
+            <CurrentRoom roomName={currentRoom} />
           </div>
         </div>
       </NSSocketContext.Provider>
