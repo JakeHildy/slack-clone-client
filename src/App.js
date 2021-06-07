@@ -6,6 +6,7 @@ import NSSocketContext from "./context/nsSocket";
 import NameSpaces from "./components/NameSpaces/NameSpaces";
 import Rooms from "./components/Rooms/Rooms";
 import CurrentRoom from "./components/CurrentRoom/CurrentRoom";
+import NavBar from "./components/NavBar/NavBar";
 
 function App() {
   const [nsSocket, setNsSocket] = useState(null);
@@ -35,14 +36,21 @@ function App() {
     setCurrentRoom(room);
   };
 
+  const handleOpenSettings = () => {
+    console.log("Open Settings");
+  };
+
   return (
     <SocketContext.Provider value={socket}>
       <NSSocketContext.Provider value={nsSocket}>
         <div className="app">
-          <NameSpaces updateNamespace={updateNamespace} />
-          <Rooms updateRoom={updateRoom} roomName={currentRoom} />
-          <div className="app__current-room">
-            <CurrentRoom roomName={currentRoom} />
+          <NavBar handleOpenSettings={handleOpenSettings} />
+          <div className="app__main">
+            <NameSpaces updateNamespace={updateNamespace} />
+            <Rooms updateRoom={updateRoom} roomName={currentRoom} />
+            <div className="app__current-room">
+              <CurrentRoom roomName={currentRoom} />
+            </div>
           </div>
         </div>
       </NSSocketContext.Provider>

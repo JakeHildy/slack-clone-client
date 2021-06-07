@@ -1,6 +1,10 @@
 .app {
-  min-height: 100vh;
-  display: flex;
+  height: 100vh;
+
+  &__main {
+    display: flex;
+    height: calc(100vh - 50px);
+  }
 
   &__heading {
     font-size: 2.6rem;
@@ -9,7 +13,6 @@
 
   &__current-room {
     flex: 1;
-    height: 100vh;
   }
 }
 
