@@ -2,6 +2,9 @@
   background-color: #26262e;
   color: #fff;
   padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .namespace {
@@ -12,6 +15,11 @@
   cursor: pointer;
   transition: all 0.2s;
   margin-bottom: 1rem;
+  transition: all 0.2s;
+
+  &--highlighted {
+    border: 3px solid white;
+  }
 
   &__img {
     width: 100%;

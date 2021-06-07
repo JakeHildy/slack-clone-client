@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import SocketContext from "./../../context/socket";
+import NSSocketContext from "./../../context/nsSocket";
 import "./NameSpaces.scss";
 
 function NameSpaces({ updateNamespace }) {
   const [nsData, setNsData] = useState(null);
   const socket = useContext(SocketContext);
+  const nsSocket = useContext(NSSocketContext);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -26,10 +28,13 @@ function NameSpaces({ updateNamespace }) {
     return (
       <div className="namespaces">
         {nsData.map((namespace, i) => {
+          const currentNS = namespace.endpoint === nsSocket.nsp;
           return (
             <div
               key={i}
-              className="namespace"
+              className={`namespace ${
+                currentNS ? "namespace--highlighted" : ""
+              }`}
               ns={namespace.endpoint}
               onClick={(e) => connectToNS(e)}
             >
