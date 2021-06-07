@@ -13,6 +13,14 @@ function App() {
   const [ns, setNs] = useState("/wiki");
 
   useEffect(() => {
+    if (!localStorage.getItem("username")) {
+      let username = prompt("What is your username?");
+      localStorage.setItem("username", username);
+      window.location.reload();
+    }
+  }, []);
+
+  useEffect(() => {
     if (nsSocket) {
       nsSocket.close();
     }
