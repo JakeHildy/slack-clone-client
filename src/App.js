@@ -7,6 +7,7 @@ import NameSpaces from "./components/NameSpaces/NameSpaces";
 import Rooms from "./components/Rooms/Rooms";
 import CurrentRoom from "./components/CurrentRoom/CurrentRoom";
 import NavBar from "./components/NavBar/NavBar";
+import SettingsModal from "./components/SettingsModal/SettingsModal";
 
 function App() {
   const [nsSocket, setNsSocket] = useState(null);
@@ -52,6 +53,7 @@ function App() {
               <CurrentRoom roomName={currentRoom} />
             </div>
           </div>
+          <SettingsModal />
         </div>
       </NSSocketContext.Provider>
     </SocketContext.Provider>

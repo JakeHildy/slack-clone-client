@@ -1,0 +1,17 @@
+.dropdown {
+  &__label {
+    font-weight: normal;
+    margin-right: 2rem;
+  }
+
+  &__select {
+    color: #333;
+    font-family: inherit;
+    padding: 0.4rem 0.4rem;
+    border-radius: 6px;
+    border: 1px solid #777;
+    outline: none;
+    background-color: #555;
+    color: white;
+  }
+}

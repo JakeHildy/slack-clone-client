@@ -1,0 +1,80 @@
+.settings-modal {
+  font-family: "Lato";
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(38, 38, 46, 0.5),
+    rgba(38, 38, 46, 0.8)
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    background-color: #444444;
+    width: 60rem;
+    height: 40rem;
+    border-radius: 9px;
+    border: 1px solid #777;
+    color: white;
+  }
+
+  &__heading {
+    padding: 3rem 3rem;
+    border-bottom: 1px solid #777;
+  }
+
+  &__form {
+    padding: 2rem;
+
+    &--top {
+    }
+
+    &--bottom {
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    &--label {
+      font-weight: normal;
+      margin-right: 2rem;
+    }
+
+    &--username {
+      color: #333;
+      font-family: inherit;
+      padding: 0.4rem 0.4rem;
+      border-radius: 6px;
+      border: 1px solid #777;
+      outline: none;
+      background-color: #555;
+      color: white;
+
+      &:active,
+      &:focus {
+        border: 1px solid #ddd;
+      }
+    }
+
+    &--select {
+      color: #333;
+      font-family: inherit;
+      padding: 0.4rem 0.4rem;
+      border-radius: 6px;
+      border: 1px solid #777;
+      outline: none;
+      background-color: #555;
+      color: white;
+    }
+  }
+
+  &__avatar {
+    transform: scale(0.5);
+    position: absolute;
+    right: 0;
+  }
+}
