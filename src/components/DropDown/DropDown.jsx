@@ -1,20 +1,20 @@
 import React from "react";
 import "./DropDown.scss";
 
-function DropDown() {
+function DropDown({ label, value, options, handleChange }) {
   return (
     <div className="dropdown">
-      <label htmlFor="toptype" className="dropdown__label">
-        topType
+      <label htmlFor={label} className="dropdown__label">
+        {label}
       </label>
       <select
-        id="topType"
-        name="topType"
-        value={topType}
-        onChange={(e) => setTopType(e.target.value)}
+        id={label}
+        name={label}
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
         className="dropdown__select"
       >
-        {avatarOptions.topType.map((option, i) => {
+        {options.map((option, i) => {
           return (
             <option key={i} value={option}>
               {option}

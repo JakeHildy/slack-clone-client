@@ -1,10 +1,13 @@
 .dropdown {
+  margin-bottom: 0.6rem;
   &__label {
     font-weight: normal;
     margin-right: 2rem;
+    width: 10rem;
   }
 
   &__select {
+    width: 16rem;
     color: #333;
     font-family: inherit;
     padding: 0.4rem 0.4rem;

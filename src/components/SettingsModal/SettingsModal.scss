@@ -17,7 +17,7 @@
   &__container {
     background-color: #444444;
     width: 60rem;
-    height: 40rem;
+    // height: 40rem;
     border-radius: 9px;
     border: 1px solid #777;
     color: white;
@@ -37,6 +37,7 @@
     &--bottom {
       margin-top: 2rem;
       position: relative;
+      padding: 0 2rem;
     }
 
     &--label {
@@ -73,8 +74,9 @@
   }
 
   &__avatar {
-    transform: scale(0.5);
+    transform: scale(0.55);
     position: absolute;
-    right: 0;
+    right: -3rem;
+    top: -10rem;
   }
 }
