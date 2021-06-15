@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-
 import "./SettingsModal.scss";
 import avatarOptions from "./../../data/avatar-options.json";
 import DropDown from "./../DropDown/DropDown";
 import TextInput from "./../TextInput/TextInput";
 import CustomAvatar from "./../CustomAvatar/CustomAvatar";
+import DiceIcon from "../Icons/DiceIcon/DiceIcon";
 
 function SettingsModal() {
   const [username, setUsername] = useState(localStorage.getItem("username"));
@@ -22,10 +22,6 @@ function SettingsModal() {
   const [mouthType, setMouthType] = useState(avatarOptions.mouthType[0]);
   const [skinColor, setSkinColor] = useState(avatarOptions.skinColor[0]);
 
-  const saveChanges = () => {
-    localStorage.setItem("username", username);
-  };
-
   const avatarConfig = {
     username,
     topType,
@@ -37,6 +33,35 @@ function SettingsModal() {
     eyebrowType,
     mouthType,
     skinColor,
+  };
+
+  const setAvatarFunctions = [
+    setTopType,
+    setAccessoriesType,
+    setHairColor,
+    setFacialHairType,
+    setClotheType,
+    setEyeType,
+    setEyebrowType,
+    setMouthType,
+    setSkinColor,
+  ];
+
+  const saveChanges = () => {
+    localStorage.setItem("username", username);
+  };
+
+  const randomizeAvatar = () => {
+    // Create Array of the object keys
+    const optionNames = Object.keys(avatarOptions);
+
+    // Loop over the set functions and randomize each one
+    setAvatarFunctions.forEach((setFunc, i) => {
+      const randomNum = Math.floor(
+        Math.random() * avatarOptions[optionNames[i]].length
+      );
+      setFunc(avatarOptions[optionNames[i]][randomNum]);
+    });
   };
 
   return (
@@ -104,6 +129,10 @@ function SettingsModal() {
               options={avatarOptions.skinColor}
               handleChange={setSkinColor}
             />
+
+            <div className="settings-modal__randomize-icon">
+              <DiceIcon fill="#bbb" handleClick={randomizeAvatar} />
+            </div>
           </form>
           <CustomAvatar avatarConfig={avatarConfig} />
         </div>
