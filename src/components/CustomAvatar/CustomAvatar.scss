@@ -1,0 +1,19 @@
+.avatar {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+
+  &__container {
+    transform: scale(0.7);
+    position: absolute;
+    right: -3rem;
+    top: -5.2rem;
+  }
+
+  &__username {
+    position: absolute;
+    bottom: -2rem;
+    width: 100%;
+    text-align: center;
+  }
+}

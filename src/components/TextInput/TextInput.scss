@@ -1,0 +1,26 @@
+.text-input {
+  margin-bottom: 0.6rem;
+
+  &__label {
+    width: 10rem;
+    font-weight: normal;
+    margin-right: 2rem;
+  }
+
+  &__input {
+    color: #333;
+    width: 16rem;
+    font-family: inherit;
+    padding: 0.4rem 0.4rem;
+    border-radius: 6px;
+    border: 1px solid #777;
+    outline: none;
+    background-color: #555;
+    color: white;
+
+    &:active,
+    &:focus {
+      border: 1px solid #ddd;
+    }
+  }
+}

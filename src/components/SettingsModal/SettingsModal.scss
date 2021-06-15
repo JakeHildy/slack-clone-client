@@ -28,55 +28,14 @@
     border-bottom: 1px solid #777;
   }
 
-  &__form {
+  &__settings {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     padding: 2rem;
-
-    &--top {
-    }
-
-    &--bottom {
-      margin-top: 2rem;
-      position: relative;
-      padding: 0 2rem;
-    }
-
-    &--label {
-      font-weight: normal;
-      margin-right: 2rem;
-    }
-
-    &--username {
-      color: #333;
-      font-family: inherit;
-      padding: 0.4rem 0.4rem;
-      border-radius: 6px;
-      border: 1px solid #777;
-      outline: none;
-      background-color: #555;
-      color: white;
-
-      &:active,
-      &:focus {
-        border: 1px solid #ddd;
-      }
-    }
-
-    &--select {
-      color: #333;
-      font-family: inherit;
-      padding: 0.4rem 0.4rem;
-      border-radius: 6px;
-      border: 1px solid #777;
-      outline: none;
-      background-color: #555;
-      color: white;
-    }
   }
 
-  &__avatar {
-    transform: scale(0.55);
-    position: absolute;
-    right: -3rem;
-    top: -10rem;
+  &__form {
+    // padding: 2rem;
   }
 }
