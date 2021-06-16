@@ -2,7 +2,7 @@ import React from "react";
 import "./TextInput.scss";
 import ErrorIcon from "./../Icons/ErrorIcon";
 
-function TextInput({ label, value, handleChange, placeholder, error }) {
+function TextInput({ label, value, handleChange, placeholder, error, type }) {
   return (
     <div className="text-input">
       <label htmlFor={label} className="text-input__label">
@@ -14,7 +14,7 @@ function TextInput({ label, value, handleChange, placeholder, error }) {
         value={value}
         placeholder={placeholder || ""}
         onChange={(e) => handleChange(e.target.value)}
-        type="text"
+        type={type || "text"}
         className={`text-input__input ${
           !!error ? "text-input__input--error" : ""
         }`}

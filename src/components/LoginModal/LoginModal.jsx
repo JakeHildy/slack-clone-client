@@ -25,6 +25,10 @@ function LoginModal({ handleShowSettings }) {
     setPasswordError("");
   }, [password]);
 
+  useEffect(() => {
+    setConfirmPasswordError("");
+  }, [confirmPassword]);
+
   const handleLogin = () => {
     let _emailError = "";
     if (!validator.isEmail(email)) {
@@ -46,7 +50,32 @@ function LoginModal({ handleShowSettings }) {
   };
 
   const handleSignUp = () => {
-    console.log("handlesignup");
+    let _emailError = "";
+    if (!validator.isEmail(email)) {
+      _emailError = `Invalid email`;
+    }
+
+    let _passwordError = "";
+    if (validator.isEmpty(password)) {
+      _passwordError = `Please enter a password`;
+    }
+
+    let _passwordConfirmError = "";
+    if (validator.isEmpty(confirmPassword)) {
+      _passwordConfirmError = `Please confirm password`;
+    }
+    if (password !== confirmPassword) {
+      _passwordConfirmError = `Passwords don't match`;
+    }
+
+    if (_emailError || _passwordError || _passwordConfirmError) {
+      setEmailError(_emailError);
+      setPasswordError(_passwordError);
+      setConfirmPasswordError(_passwordConfirmError);
+      return;
+    }
+
+    console.log("attempt signup");
   };
 
   const handleToggleSignup = (e) => {
@@ -82,6 +111,7 @@ function LoginModal({ handleShowSettings }) {
               handleChange={setPassword}
               placeholder="Enter password..."
               error={passwordError}
+              type="password"
             />
             {signingUp && (
               <TextInput
@@ -89,7 +119,8 @@ function LoginModal({ handleShowSettings }) {
                 value={confirmPassword}
                 handleChange={setConfirmPassword}
                 placeholder="Confirm password..."
-                error=""
+                error={confirmPasswordError}
+                type="password"
               />
             )}
             <div className="login-modal__login-btn">
