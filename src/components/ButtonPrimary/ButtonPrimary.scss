@@ -1,0 +1,15 @@
+.button-primary {
+  background-color: #555;
+  padding: 0.4rem 0.4rem;
+  outline: none;
+  border: 1px solid #777;
+  border-radius: 6px;
+  min-width: 8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: darken(#555, 1);
+    border: 1px solid #aaa;
+  }
+}

@@ -8,14 +8,14 @@ import Rooms from "./components/Rooms/Rooms";
 import CurrentRoom from "./components/CurrentRoom/CurrentRoom";
 import NavBar from "./components/NavBar/NavBar";
 import SettingsModal from "./components/SettingsModal/SettingsModal";
+import LoginModal from "./components/LoginModal/LoginModal";
+import { checkIfLoggedIn } from "./utils/loginUtils";
 
 function App() {
   const [nsSocket, setNsSocket] = useState(null);
   const [currentRoom, setCurrentRoom] = useState("");
   const [showSettings, setShowSettings] = useState(false);
-  const [showLogin, setShowLogin] = useState(
-    sessionStorage.getItem("authToken") || true
-  );
+  const [showLogin, setShowLogin] = useState(checkIfLoggedIn());
   const [ns, setNs] = useState("/wiki");
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function App() {
           {showSettings && (
             <SettingsModal handleShowSettings={handleShowSettings} />
           )}
-          {/* {showLogin && } */}
+          {showLogin && <LoginModal />}
         </div>
       </NSSocketContext.Provider>
     </SocketContext.Provider>
