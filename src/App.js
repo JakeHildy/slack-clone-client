@@ -12,6 +12,10 @@ import SettingsModal from "./components/SettingsModal/SettingsModal";
 function App() {
   const [nsSocket, setNsSocket] = useState(null);
   const [currentRoom, setCurrentRoom] = useState("");
+  const [showSettings, setShowSettings] = useState(false);
+  const [showLogin, setShowLogin] = useState(
+    sessionStorage.getItem("authToken") || true
+  );
   const [ns, setNs] = useState("/wiki");
 
   useEffect(() => {
@@ -37,15 +41,15 @@ function App() {
     setCurrentRoom(room);
   };
 
-  const handleOpenSettings = () => {
-    console.log("Open Settings");
+  const handleShowSettings = (show) => {
+    setShowSettings(show);
   };
 
   return (
     <SocketContext.Provider value={socket}>
       <NSSocketContext.Provider value={nsSocket}>
         <div className="app">
-          <NavBar handleOpenSettings={handleOpenSettings} />
+          <NavBar handleOpenSettings={() => handleShowSettings(true)} />
           <div className="app__main">
             <NameSpaces updateNamespace={updateNamespace} />
             <Rooms updateRoom={updateRoom} roomName={currentRoom} />
@@ -53,7 +57,10 @@ function App() {
               <CurrentRoom roomName={currentRoom} />
             </div>
           </div>
-          <SettingsModal />
+          {showSettings && (
+            <SettingsModal handleShowSettings={handleShowSettings} />
+          )}
+          {/* {showLogin && } */}
         </div>
       </NSSocketContext.Provider>
     </SocketContext.Provider>

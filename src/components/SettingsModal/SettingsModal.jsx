@@ -6,7 +6,7 @@ import TextInput from "./../TextInput/TextInput";
 import CustomAvatar from "./../CustomAvatar/CustomAvatar";
 import DiceIcon from "../Icons/DiceIcon/DiceIcon";
 
-function SettingsModal() {
+function SettingsModal({ handleShowSettings }) {
   const [username, setUsername] = useState(localStorage.getItem("username"));
   const [topType, setTopType] = useState(avatarOptions.topType[0]);
   const [accessoriesType, setAccessoriesType] = useState(
@@ -64,10 +64,21 @@ function SettingsModal() {
     });
   };
 
+  const hideModal = (e) => {
+    handleShowSettings(false);
+  };
+
+  const stopPropagation = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="settings-modal">
-      <div className="settings-modal__container">
+    <div className="settings-modal" onClick={hideModal}>
+      <div className="settings-modal__container" onClick={stopPropagation}>
         <h2 className="settings-modal__heading">Settings</h2>
+        <p className="settings-modal__close" onClick={hideModal}>
+          X
+        </p>
         <div className="settings-modal__settings">
           <form className="settings-modal__form">
             <TextInput

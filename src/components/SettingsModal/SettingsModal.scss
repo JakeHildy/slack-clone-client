@@ -17,7 +17,7 @@
   &__container {
     background-color: #444444;
     width: 60rem;
-    // height: 40rem;
+    position: relative;
     border-radius: 9px;
     border: 1px solid #777;
     color: white;
@@ -26,6 +26,15 @@
   &__heading {
     padding: 3rem 3rem;
     border-bottom: 1px solid #777;
+  }
+
+  &__close {
+    font-size: 2.5rem;
+    position: absolute;
+    top: 1.5rem;
+    right: 2.5rem;
+    cursor: pointer;
+    font-family: "Lato";
   }
 
   &__settings {
