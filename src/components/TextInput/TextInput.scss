@@ -1,5 +1,6 @@
 .text-input {
   margin-bottom: 0.6rem;
+  position: relative;
 
   &__label {
     width: 10rem;
@@ -22,5 +23,23 @@
     &:focus {
       border: 1px solid #ddd;
     }
+
+    &--error {
+      border: 1px solid #bf360c;
+    }
+  }
+}
+
+.error {
+  &__icon {
+    position: absolute;
+    z-index: 1;
+    right: 0.6rem;
+    top: 0.6rem;
+  }
+
+  &__message {
+    text-align: right;
+    color: #bf360c;
   }
 }

@@ -2,25 +2,39 @@ import React, { useState } from "react";
 import "./LoginModal.scss";
 import TextInput from "./../TextInput/TextInput";
 import ButtonPrimary from "./../ButtonPrimary/ButtonPrimary";
+import validator from "validator";
 
 function LoginModal({ handleShowSettings }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [signingUp, setSigningUp] = useState(true);
+  const [signingUp, setSigningUp] = useState(false);
 
   const hideModal = (e) => {
     handleShowSettings(false);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("handleLogin");
+  const handleLogin = () => {
+    console.log("email:", validator.isEmail(email));
+    console.log("password:", !validator.isEmpty(password));
+  };
+
+  const handleSignUp = () => {
+    console.log("handlesignup");
   };
 
   const handleToggleSignup = (e) => {
     e.preventDefault();
     setSigningUp((current) => !current);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (signingUp) {
+      handleSignUp();
+    } else {
+      handleLogin();
+    }
   };
 
   return (
@@ -34,12 +48,14 @@ function LoginModal({ handleShowSettings }) {
               value={email}
               handleChange={setEmail}
               placeholder="Enter email..."
+              error=""
             />
             <TextInput
               label="password"
               value={password}
               handleChange={setPassword}
               placeholder="Enter password..."
+              error=""
             />
             {signingUp && (
               <TextInput
@@ -47,11 +63,12 @@ function LoginModal({ handleShowSettings }) {
                 value={confirmPassword}
                 handleChange={setConfirmPassword}
                 placeholder="Confirm password..."
+                error=""
               />
             )}
             <div className="login-modal__login-btn">
               <ButtonPrimary
-                handleLogin={handleLogin}
+                handleLogin={handleFormSubmit}
                 label={signingUp ? "Sign-up" : "Login"}
               />
             </div>

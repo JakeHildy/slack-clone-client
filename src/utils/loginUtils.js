@@ -1,5 +1,6 @@
-export const checkIfLoggedIn = () => {
+export const isLoggedIn = () => {
   const token = sessionStorage.getItem("authToken");
-  console.log(!!token);
+  if (!token) return false;
+  // TODO use the token and attempt to login to prove its good.
   return true;
 };

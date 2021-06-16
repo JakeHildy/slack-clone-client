@@ -9,13 +9,13 @@ import CurrentRoom from "./components/CurrentRoom/CurrentRoom";
 import NavBar from "./components/NavBar/NavBar";
 import SettingsModal from "./components/SettingsModal/SettingsModal";
 import LoginModal from "./components/LoginModal/LoginModal";
-import { checkIfLoggedIn } from "./utils/loginUtils";
+import { isLoggedIn } from "./utils/loginUtils";
 
 function App() {
   const [nsSocket, setNsSocket] = useState(null);
   const [currentRoom, setCurrentRoom] = useState("");
   const [showSettings, setShowSettings] = useState(false);
-  const [showLogin, setShowLogin] = useState(checkIfLoggedIn());
+  const [showLogin, setShowLogin] = useState(!isLoggedIn());
   const [ns, setNs] = useState("/wiki");
 
   useEffect(() => {
