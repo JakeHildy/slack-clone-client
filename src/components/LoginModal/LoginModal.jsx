@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LoginModal.scss";
 import TextInput from "./../TextInput/TextInput";
 import ButtonPrimary from "./../ButtonPrimary/ButtonPrimary";
@@ -6,17 +6,43 @@ import validator from "validator";
 
 function LoginModal({ handleShowSettings }) {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [signingUp, setSigningUp] = useState(false);
 
   const hideModal = (e) => {
     handleShowSettings(false);
   };
 
+  useEffect(() => {
+    setEmailError("");
+  }, [email]);
+
+  useEffect(() => {
+    setPasswordError("");
+  }, [password]);
+
   const handleLogin = () => {
-    console.log("email:", validator.isEmail(email));
-    console.log("password:", !validator.isEmpty(password));
+    let _emailError = "";
+    if (!validator.isEmail(email)) {
+      _emailError = `Invalid email`;
+    }
+
+    let _passwordError = "";
+    if (validator.isEmpty(password)) {
+      _passwordError = `Please enter a password`;
+    }
+
+    if (_emailError || _passwordError) {
+      setEmailError(_emailError);
+      setPasswordError(_passwordError);
+      return;
+    }
+
+    console.log("attempt login");
   };
 
   const handleSignUp = () => {
@@ -48,14 +74,14 @@ function LoginModal({ handleShowSettings }) {
               value={email}
               handleChange={setEmail}
               placeholder="Enter email..."
-              error=""
+              error={emailError}
             />
             <TextInput
               label="password"
               value={password}
               handleChange={setPassword}
               placeholder="Enter password..."
-              error=""
+              error={passwordError}
             />
             {signingUp && (
               <TextInput
