@@ -1,11 +1,11 @@
 import React from "react";
 import "./ButtonPrimary.scss";
 
-function ButtonPrimary({ handleLogin }) {
+function ButtonPrimary({ handleLogin, label }) {
   return (
     <>
       <button className="button-primary" onClick={handleLogin}>
-        Login
+        {label}
       </button>
     </>
   );

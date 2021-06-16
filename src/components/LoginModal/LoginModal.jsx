@@ -6,6 +6,8 @@ import ButtonPrimary from "./../ButtonPrimary/ButtonPrimary";
 function LoginModal({ handleShowSettings }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [signingUp, setSigningUp] = useState(true);
 
   const hideModal = (e) => {
     handleShowSettings(false);
@@ -16,9 +18,9 @@ function LoginModal({ handleShowSettings }) {
     console.log("handleLogin");
   };
 
-  const handleSignUp = (e) => {
+  const handleToggleSignup = (e) => {
     e.preventDefault();
-    console.log("handleSignUp");
+    setSigningUp((current) => !current);
   };
 
   return (
@@ -39,11 +41,22 @@ function LoginModal({ handleShowSettings }) {
               handleChange={setPassword}
               placeholder="Enter password..."
             />
+            {signingUp && (
+              <TextInput
+                label="confirm"
+                value={confirmPassword}
+                handleChange={setConfirmPassword}
+                placeholder="Confirm password..."
+              />
+            )}
             <div className="login-modal__login-btn">
-              <ButtonPrimary handleLogin={handleLogin} />
+              <ButtonPrimary
+                handleLogin={handleLogin}
+                label={signingUp ? "Sign-up" : "Login"}
+              />
             </div>
-            <h4 onClick={handleSignUp} className="login-modal__sign-up">
-              Sign up
+            <h4 onClick={handleToggleSignup} className="login-modal__sign-up">
+              {signingUp ? "Back" : "Sign up"}
             </h4>
           </form>
         </div>
