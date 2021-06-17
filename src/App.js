@@ -45,6 +45,10 @@ function App() {
     setShowSettings(show);
   };
 
+  const handleShowLogin = (show) => {
+    setShowLogin(show);
+  };
+
   return (
     <SocketContext.Provider value={socket}>
       <NSSocketContext.Provider value={nsSocket}>
@@ -60,7 +64,7 @@ function App() {
           {showSettings && (
             <SettingsModal handleShowSettings={handleShowSettings} />
           )}
-          {showLogin && <LoginModal />}
+          {showLogin && <LoginModal handleShowLogin={handleShowLogin} />}
         </div>
       </NSSocketContext.Provider>
     </SocketContext.Provider>

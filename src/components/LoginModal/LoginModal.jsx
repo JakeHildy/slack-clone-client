@@ -3,23 +3,31 @@ import "./LoginModal.scss";
 import TextInput from "./../TextInput/TextInput";
 import ButtonPrimary from "./../ButtonPrimary/ButtonPrimary";
 import validator from "validator";
+import { getAllUsers, createUser, loginUser } from "./../../utils/userAPI";
+import { setSessionStorage } from "../../utils/loginUtils";
 
-function LoginModal({ handleShowSettings }) {
+function LoginModal({ handleShowLogin }) {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [signingUp, setSigningUp] = useState(false);
 
-  const hideModal = (e) => {
-    handleShowSettings(false);
+  const hideModal = () => {
+    handleShowLogin(false);
   };
 
   useEffect(() => {
     setEmailError("");
   }, [email]);
+
+  useEffect(() => {
+    setUsernameError("");
+  }, [username]);
 
   useEffect(() => {
     setPasswordError("");
@@ -29,7 +37,7 @@ function LoginModal({ handleShowSettings }) {
     setConfirmPasswordError("");
   }, [confirmPassword]);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     let _emailError = "";
     if (!validator.isEmail(email)) {
       _emailError = `Invalid email`;
@@ -46,13 +54,25 @@ function LoginModal({ handleShowSettings }) {
       return;
     }
 
-    console.log("attempt login");
+    // Attempt Login
+    try {
+      const loginResponse = await loginUser(email, password);
+      setSessionStorage(loginResponse.data);
+      hideModal();
+    } catch (err) {
+      setPasswordError("username or pw incorrect.");
+    }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     let _emailError = "";
     if (!validator.isEmail(email)) {
       _emailError = `Invalid email`;
+    }
+
+    let _usernameError = "";
+    if (validator.isEmpty(username)) {
+      _usernameError = `Please enter a username`;
     }
 
     let _passwordError = "";
@@ -68,14 +88,29 @@ function LoginModal({ handleShowSettings }) {
       _passwordConfirmError = `Passwords don't match`;
     }
 
-    if (_emailError || _passwordError || _passwordConfirmError) {
+    if (
+      _emailError ||
+      _usernameError ||
+      _passwordError ||
+      _passwordConfirmError
+    ) {
       setEmailError(_emailError);
+      setUsernameError(_usernameError);
       setPasswordError(_passwordError);
       setConfirmPasswordError(_passwordConfirmError);
       return;
     }
 
-    console.log("attempt signup");
+    try {
+      const newUser = await createUser({
+        username,
+        email,
+        password,
+      });
+      setSigningUp(false);
+    } catch (err) {
+      setEmailError("email already taken.");
+    }
   };
 
   const handleToggleSignup = (e) => {
@@ -105,6 +140,16 @@ function LoginModal({ handleShowSettings }) {
               placeholder="Enter email..."
               error={emailError}
             />
+            {signingUp && (
+              <TextInput
+                label="username"
+                value={username}
+                handleChange={setUsername}
+                placeholder="Enter username..."
+                error={usernameError}
+              />
+            )}
+
             <TextInput
               label="password"
               value={password}
