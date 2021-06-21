@@ -8,11 +8,13 @@ function CurrentRoom({ roomName }) {
   const [messages, setMessages] = useState([]);
   const [searchStr, setsearchStr] = useState("");
   const [numUsers, setnumUsers] = useState(0);
+  const [id, setId] = useState(sessionStorage.getItem("id"));
   const messagesContainer = useRef();
 
   useEffect(() => {
     if (nsSocket) {
       nsSocket.on("messageToClients", (msg) => {
+        console.log(msg);
         setMessages((prevMessages) => [...prevMessages, msg]);
         scrollToBottomOfMessages();
       });
@@ -37,7 +39,10 @@ function CurrentRoom({ roomName }) {
     e.preventDefault();
     const newMessage = e.target.message.value;
     if (newMessage === "") return;
-    nsSocket.emit("newMessageToServer", { text: newMessage });
+    nsSocket.emit("newMessageToServer", {
+      text: newMessage,
+      id: id,
+    });
     e.target.reset();
   };
 
@@ -75,16 +80,17 @@ function CurrentRoom({ roomName }) {
       </div>
 
       <ul className="current-room__messages" ref={messagesContainer}>
-        {messages
-          .filter((message) => {
-            return (
-              message.text.toLowerCase().includes(searchStr.toLowerCase()) ||
-              message.username.toLowerCase().includes(searchStr.toLowerCase())
-            );
-          })
-          .map((message, i) => {
-            return <Message key={i} message={message} />;
-          })}
+        {messages &&
+          messages
+            .filter((message) => {
+              return (
+                message.text.toLowerCase().includes(searchStr.toLowerCase()) ||
+                message.username.toLowerCase().includes(searchStr.toLowerCase())
+              );
+            })
+            .map((message, i) => {
+              return <Message key={i} message={message} />;
+            })}
       </ul>
       <form onSubmit={(e) => onFormSubmit(e)} className="form">
         <input
