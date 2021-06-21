@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SettingsModal.scss";
 import avatarOptions from "./../../data/avatar-options.json";
 import DropDown from "./../DropDown/DropDown";
 import TextInput from "./../TextInput/TextInput";
 import CustomAvatar from "./../CustomAvatar/CustomAvatar";
 import DiceIcon from "../Icons/DiceIcon/DiceIcon";
+import { getUser } from "../../utils/userAPI";
 
 function SettingsModal({ handleShowSettings }) {
   const [username, setUsername] = useState(localStorage.getItem("username"));
@@ -65,12 +66,40 @@ function SettingsModal({ handleShowSettings }) {
   };
 
   const hideModal = (e) => {
+    console.log("closing modal - save here?");
     handleShowSettings(false);
   };
 
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
+
+  // Populate Settings fields with user data.
+  useEffect(async () => {
+    const user = await getUser();
+    const { username } = user;
+    const {
+      topType,
+      accessoriesType,
+      hairColor,
+      facialHairType,
+      clotheType,
+      eyeType,
+      eyebrowType,
+      mouthType,
+      skinColor,
+    } = user.avatarConfig;
+    setUsername(username);
+    setTopType(topType);
+    setAccessoriesType(accessoriesType);
+    setHairColor(hairColor);
+    setFacialHairType(facialHairType);
+    setClotheType(clotheType);
+    setEyeType(eyeType);
+    setEyebrowType(eyebrowType);
+    setMouthType(mouthType);
+    setSkinColor(skinColor);
+  }, []);
 
   return (
     <div className="settings-modal" onClick={hideModal}>
