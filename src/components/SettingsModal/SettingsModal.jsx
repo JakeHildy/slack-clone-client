@@ -50,7 +50,8 @@ function SettingsModal({ handleShowSettings }) {
 
   const saveChanges = async () => {
     localStorage.setItem("username", username);
-    console.log(await updateUserConfig(username, avatarConfig));
+    await updateUserConfig(username, avatarConfig);
+    window.location.reload();
   };
 
   const randomizeAvatar = () => {
@@ -74,6 +75,10 @@ function SettingsModal({ handleShowSettings }) {
 
   const stopPropagation = (e) => {
     e.stopPropagation();
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
   };
 
   // Populate Settings fields with user data.
@@ -111,7 +116,7 @@ function SettingsModal({ handleShowSettings }) {
           X
         </p>
         <div className="settings-modal__settings">
-          <form className="settings-modal__form">
+          <form className="settings-modal__form" onSubmit={handleFormSubmit}>
             <TextInput
               label="username"
               value={username}
