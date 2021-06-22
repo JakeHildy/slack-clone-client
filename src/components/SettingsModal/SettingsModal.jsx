@@ -5,10 +5,10 @@ import DropDown from "./../DropDown/DropDown";
 import TextInput from "./../TextInput/TextInput";
 import CustomAvatar from "./../CustomAvatar/CustomAvatar";
 import DiceIcon from "../Icons/DiceIcon/DiceIcon";
-import { getUser } from "../../utils/userAPI";
+import { getUser, updateUserConfig } from "../../utils/userAPI";
 
 function SettingsModal({ handleShowSettings }) {
-  const [username, setUsername] = useState(localStorage.getItem("username"));
+  const [username, setUsername] = useState("");
   const [topType, setTopType] = useState(avatarOptions.topType[0]);
   const [accessoriesType, setAccessoriesType] = useState(
     avatarOptions.accessoriesType[0]
@@ -48,8 +48,9 @@ function SettingsModal({ handleShowSettings }) {
     setSkinColor,
   ];
 
-  const saveChanges = () => {
+  const saveChanges = async () => {
     localStorage.setItem("username", username);
+    console.log(await updateUserConfig(username, avatarConfig));
   };
 
   const randomizeAvatar = () => {
@@ -67,6 +68,7 @@ function SettingsModal({ handleShowSettings }) {
 
   const hideModal = (e) => {
     console.log("closing modal - save here?");
+    saveChanges();
     handleShowSettings(false);
   };
 

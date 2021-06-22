@@ -19,9 +19,20 @@ export const getUser = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.get(
-        `${PATH}${sessionStorage.getItem("id")}`
+        `${PATH}/${sessionStorage.getItem("id")}`
       );
       resolve(response.data.user);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const getUserPublic = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios.get(`${PATH}/public/${id}`);
+      resolve(response.data);
     } catch (err) {
       reject(err);
     }
@@ -53,6 +64,13 @@ export const loginUser = (email, password) => {
 export const updateUserConfig = (username, avatarConfig) => {
   return new Promise(async (resolve, reject) => {
     try {
-    } catch (error) {}
+      const response = await axios.patch(
+        `${PATH}/${sessionStorage.getItem("id")}`,
+        { username, avatarConfig }
+      );
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
   });
 };
