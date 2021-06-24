@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./LoginModal.scss";
 import TextInput from "./../TextInput/TextInput";
 import ButtonPrimary from "./../ButtonPrimary/ButtonPrimary";
 import validator from "validator";
-import { getAllUsers, createUser, loginUser } from "./../../utils/userAPI";
+import { createUser, loginUser } from "./../../utils/userAPI";
 import { setSessionStorage } from "../../utils/loginUtils";
+import UserContext from "./../../context/userContext";
 
 function LoginModal({ handleShowLogin }) {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ function LoginModal({ handleShowLogin }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [signingUp, setSigningUp] = useState(false);
+  let userContext = useContext(UserContext);
 
   const hideModal = () => {
     handleShowLogin(false);
@@ -57,7 +59,10 @@ function LoginModal({ handleShowLogin }) {
     // Attempt Login
     try {
       const loginResponse = await loginUser(email, password);
-      setSessionStorage(loginResponse.data);
+      // login succesful
+      const { token, userId, username, avatarConfig } = loginResponse.data;
+      setSessionStorage(token);
+      userContext.onLoggedIn({ userId, username, avatarConfig });
       hideModal();
     } catch (err) {
       setPasswordError("username or pw incorrect.");

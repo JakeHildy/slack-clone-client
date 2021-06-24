@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./NavBar.scss";
+import UserContext from "./../../context/userContext";
 import SettingsIcon from "./../Icons/SettingsIcon";
-import { getUserPublic } from "./../../utils/userAPI";
 import CustomAvatarSmall from "./../CustomAvatarSmall/CustomAvatarSmall";
 
-function NavBar({ handleOpenSettings }) {
-  const [avatar, setAvatar] = useState(null);
-  const [username, setUsername] = useState(null);
-
-  useEffect(async () => {
-    const userData = await getUserPublic(sessionStorage.getItem("id"));
-    const { avatarConfig, username } = userData.user;
-    setAvatar(avatarConfig);
-    setUsername(username);
-  }, []);
+function NavBar({ handleOpenSettings, handleLogout }) {
+  let userContext = useContext(UserContext);
 
   return (
     <div className="navbar">
       <div className="navbar__icon" onClick={handleOpenSettings}>
         <SettingsIcon fill="#fff" />
       </div>
-      <h3 className="navbar__username">{username}</h3>
-      <div className="navbar__avatar">
-        {avatar && <CustomAvatarSmall avatarConfig={avatar} />}
-      </div>
+      {userContext.userData && (
+        <>
+          <h3 className="navbar__username">{userContext.userData.username}</h3>
+          <div className="navbar__logout" onClick={handleLogout}>
+            logout
+          </div>
+          <div className="navbar__avatar">
+            <CustomAvatarSmall
+              avatarConfig={userContext.userData.avatarConfig}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

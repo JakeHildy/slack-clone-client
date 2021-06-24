@@ -5,8 +5,10 @@ export const isLoggedIn = () => {
   return true;
 };
 
-export const setSessionStorage = (data) => {
-  sessionStorage.setItem("authToken", data.token);
-  sessionStorage.setItem("id", data.id);
-  sessionStorage.setItem("username", data.username);
+export const setSessionStorage = (token) => {
+  sessionStorage.setItem("authToken", token);
+};
+
+export const clearSessionStorage = () => {
+  sessionStorage.clear();
 };
