@@ -14,13 +14,12 @@ export const getAllUsers = () => {
   });
 };
 
-export const getUser = () => {
-  console.log(BACKEND);
+export const getUser = (id, token) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await axios.get(
-        `${PATH}/${sessionStorage.getItem("id")}`
-      );
+      const response = await axios.get(`${PATH}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       resolve(response.data.user);
     } catch (err) {
       reject(err);

@@ -5,8 +5,9 @@ export const isLoggedIn = () => {
   return true;
 };
 
-export const setSessionStorage = (token) => {
+export const setSessionStorage = (token, id) => {
   sessionStorage.setItem("authToken", token);
+  sessionStorage.setItem("userId", id);
 };
 
 export const clearSessionStorage = () => {

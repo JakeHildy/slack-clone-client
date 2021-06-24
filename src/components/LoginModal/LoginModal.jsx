@@ -4,10 +4,9 @@ import TextInput from "./../TextInput/TextInput";
 import ButtonPrimary from "./../ButtonPrimary/ButtonPrimary";
 import validator from "validator";
 import { createUser, loginUser } from "./../../utils/userAPI";
-import { setSessionStorage } from "../../utils/loginUtils";
 import UserContext from "./../../context/userContext";
 
-function LoginModal({ handleShowLogin }) {
+function LoginModal() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [username, setUsername] = useState("");
@@ -18,10 +17,6 @@ function LoginModal({ handleShowLogin }) {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [signingUp, setSigningUp] = useState(false);
   let userContext = useContext(UserContext);
-
-  const hideModal = () => {
-    handleShowLogin(false);
-  };
 
   useEffect(() => {
     setEmailError("");
@@ -60,10 +55,10 @@ function LoginModal({ handleShowLogin }) {
     try {
       const loginResponse = await loginUser(email, password);
       // login succesful
-      const { token, userId, username, avatarConfig } = loginResponse.data;
-      setSessionStorage(token);
-      userContext.onLoggedIn({ userId, username, avatarConfig });
-      hideModal();
+      // const { token, userId, username, avatarConfig } = loginResponse.data;
+      userContext.onLoggedIn(loginResponse.data);
+      // console.log("got to here");
+      // hideModal();
     } catch (err) {
       setPasswordError("username or pw incorrect.");
     }

@@ -10,12 +10,14 @@ function NameSpaces({ updateNamespace }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    socket.on("nsList", (nsData) => {
-      setNsData(nsData);
-      setLoaded(true);
-    });
+    socket &&
+      socket.on("nsList", (nsData) => {
+        setNsData(nsData);
+        setLoaded(true);
+      });
+
     return () => {
-      socket.off("nsList");
+      socket && socket.off("nsList");
     };
   }, [socket]);
 

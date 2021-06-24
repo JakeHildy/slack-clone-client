@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import "./NavBar.scss";
 import UserContext from "./../../context/userContext";
 import SettingsIcon from "./../Icons/SettingsIcon";

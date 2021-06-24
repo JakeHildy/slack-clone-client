@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./SettingsModal.scss";
+import UserContext from "./../../context/userContext";
 import avatarOptions from "./../../data/avatar-options.json";
 import DropDown from "./../DropDown/DropDown";
 import TextInput from "./../TextInput/TextInput";
@@ -22,6 +23,7 @@ function SettingsModal({ handleShowSettings }) {
   const [eyebrowType, setEyebrowType] = useState(avatarOptions.eyebrowType[0]);
   const [mouthType, setMouthType] = useState(avatarOptions.mouthType[0]);
   const [skinColor, setSkinColor] = useState(avatarOptions.skinColor[0]);
+  const userContext = useContext(UserContext);
 
   const avatarConfig = {
     username,
@@ -83,7 +85,7 @@ function SettingsModal({ handleShowSettings }) {
 
   // Populate Settings fields with user data.
   useEffect(async () => {
-    const user = await getUser();
+    const user = await getUser(userContext.userData.userId);
     const { username } = user;
     const {
       topType,
