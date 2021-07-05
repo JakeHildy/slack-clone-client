@@ -67,13 +67,6 @@ function App() {
     );
   };
 
-  // useEffect(() => {
-  //   if (!socket) return;
-  //   socket.on("nsList", (nsData) => {
-  //     console.log(nsData);
-  //   });
-  // }, [socket]);
-
   useEffect(() => {
     if (nsSocket) {
       nsSocket.close();
@@ -91,10 +84,6 @@ function App() {
 
   const updateRoom = (room) => {
     setCurrentRoom(room);
-  };
-
-  const handleShowSettings = (show) => {
-    setShowSettings(show);
   };
 
   const handleLogin = (userData) => {
