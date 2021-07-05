@@ -8,13 +8,13 @@ function CurrentRoom({ roomName }) {
   const [messages, setMessages] = useState([]);
   const [searchStr, setsearchStr] = useState("");
   const [numUsers, setnumUsers] = useState(0);
-  const [id, setId] = useState(sessionStorage.getItem("id"));
+  const [id, setId] = useState(sessionStorage.getItem("userId"));
   const messagesContainer = useRef();
 
   useEffect(() => {
     if (nsSocket) {
       nsSocket.on("messageToClients", (msg) => {
-        console.log(msg);
+        // console.log(msg);
         setMessages((prevMessages) => [...prevMessages, msg]);
         scrollToBottomOfMessages();
       });

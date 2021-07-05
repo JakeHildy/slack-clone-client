@@ -1,7 +1,7 @@
 import "./App.scss";
 import React, { useState, useEffect } from "react";
 import socketio from "socket.io-client";
-import SocketContext, { SOCKET_URL } from "./context/socket";
+import SocketContext from "./context/socket";
 import NSSocketContext from "./context/nsSocket";
 import UserContext from "./context/userContext";
 import NameSpaces from "./components/NameSpaces/NameSpaces";
@@ -13,6 +13,7 @@ import LoginModal from "./components/LoginModal/LoginModal";
 import { setSessionStorage } from "./utils/loginUtils";
 import { isLoggedIn, clearSessionStorage } from "./utils/loginUtils";
 import { getUser, getUserPublic } from "./utils/userAPI";
+const SOCKET_URL = process.env.REACT_APP_BACKEND_URL;
 
 function App() {
   const [socket, setSocket] = useState(null);
@@ -21,7 +22,7 @@ function App() {
   const [currentRoom, setCurrentRoom] = useState("");
   const [showSettings, setShowSettings] = useState(false);
   const [showLogin, setShowLogin] = useState(!isLoggedIn());
-  const [ns, setNs] = useState("/wiki");
+  const [ns, setNs] = useState(null);
 
   useEffect(() => {
     // === APP START ===
@@ -35,6 +36,7 @@ function App() {
     } else {
       // otherwise, attempt to get user info from backend.
       getUserInfo(userId, authToken);
+      connectToMainSocket();
     }
   }, []);
 
@@ -45,7 +47,7 @@ function App() {
       const { avatarConfig, username } = response;
       // if successfull populate userData into the UserContext.
       setUserData({ avatarConfig, username });
-      connectToMainSocket();
+      // connectToMainSocket();
     } catch (err) {
       // if there was an error clear session storage and force login.
       console.log("Error Getting User info", err);
@@ -54,8 +56,10 @@ function App() {
     }
   };
 
+  ////////////////////////////////////////////////////////
+  // === MAIN SOCKET ===
   const connectToMainSocket = () => {
-    console.log("attempt connection to main socket");
+    // console.log("attempt connection to main socket");
     setSocket(
       socketio.connect(SOCKET_URL, {
         query: { id: sessionStorage.getItem("userId") },
@@ -63,11 +67,22 @@ function App() {
     );
   };
 
+  // useEffect(() => {
+  //   if (!socket) return;
+  //   socket.on("nsList", (nsData) => {
+  //     console.log(nsData);
+  //   });
+  // }, [socket]);
+
   useEffect(() => {
     if (nsSocket) {
       nsSocket.close();
     }
-    setNsSocket(socketio(`${SOCKET_URL}${ns}`));
+    setNsSocket(
+      socketio.connect(`${SOCKET_URL}${ns}`, {
+        query: { id: sessionStorage.getItem("userId") },
+      })
+    );
   }, [ns]);
 
   const updateNamespace = (ns) => {
@@ -108,11 +123,15 @@ function App() {
               handleLogout={handleLogout}
             />
             <div className="app__main">
-              <NameSpaces updateNamespace={updateNamespace} />
-              <Rooms updateRoom={updateRoom} roomName={currentRoom} />
-              <div className="app__current-room">
-                <CurrentRoom roomName={currentRoom} />
-              </div>
+              {!showLogin && (
+                <>
+                  <NameSpaces updateNamespace={updateNamespace} />
+                  <Rooms updateRoom={updateRoom} roomName={currentRoom} />
+                  <div className="app__current-room">
+                    <CurrentRoom roomName={currentRoom} />
+                  </div>
+                </>
+              )}
             </div>
             {showSettings && (
               <SettingsModal handleShowSettings={setShowSettings} />

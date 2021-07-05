@@ -14,6 +14,8 @@ function NameSpaces({ updateNamespace }) {
       socket.on("nsList", (nsData) => {
         setNsData(nsData);
         setLoaded(true);
+        // console.log(nsData[0].endpoint);
+        updateNamespace(nsData[0].endpoint);
       });
 
     return () => {
