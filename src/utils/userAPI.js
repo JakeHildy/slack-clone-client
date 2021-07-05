@@ -64,7 +64,7 @@ export const updateUserConfig = (username, avatarConfig) => {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.patch(
-        `${PATH}/${sessionStorage.getItem("id")}`,
+        `${PATH}/${sessionStorage.getItem("userId")}`,
         { username, avatarConfig }
       );
       resolve(response);

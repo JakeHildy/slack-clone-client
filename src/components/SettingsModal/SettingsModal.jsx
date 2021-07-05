@@ -51,9 +51,9 @@ function SettingsModal({ handleShowSettings }) {
   ];
 
   const saveChanges = async () => {
-    localStorage.setItem("username", username);
+    userContext.userData.username = username;
+    userContext.userData.avatarConfig = avatarConfig;
     await updateUserConfig(username, avatarConfig);
-    window.location.reload();
   };
 
   const randomizeAvatar = () => {
@@ -85,8 +85,8 @@ function SettingsModal({ handleShowSettings }) {
 
   // Populate Settings fields with user data.
   useEffect(async () => {
-    const user = await getUser(userContext.userData.userId);
-    const { username } = user;
+    // const user = await getUser(userContext.userData.userId);
+    const { username } = userContext.userData;
     const {
       topType,
       accessoriesType,
@@ -97,7 +97,7 @@ function SettingsModal({ handleShowSettings }) {
       eyebrowType,
       mouthType,
       skinColor,
-    } = user.avatarConfig;
+    } = userContext.userData.avatarConfig;
     setUsername(username);
     setTopType(topType);
     setAccessoriesType(accessoriesType);
